@@ -10,7 +10,6 @@ export async function GET(req: NextRequest) {
     const payload = verifyJwt(token);
     if (!payload) return NextResponse.json({ error: "Invalid token" }, { status: 401 });
 
-    // List ALL notes for the tenant (assignment requirement)
     const notes = await prisma.note.findMany({
       where: { tenantId: payload.tenantId },
       orderBy: { createdAt: "desc" },
@@ -35,20 +34,15 @@ export async function POST(req: NextRequest) {
     const content = typeof body.content === "string" ? body.content.trim() : "";
     const titleFromClient = typeof body.title === "string" ? body.title.trim() : "";
 
-    if (!content) {
-      return NextResponse.json({ error: "Content is required" }, { status: 400 });
-    }
+    if (!content) return NextResponse.json({ error: "Content is required" }, { status: 400 });
 
-    // Default title if client didn't provide one
-    const title = titleFromClient || (content.length ? content.slice(0, 50) : "Untitled Note");
+    const title = titleFromClient || content.slice(0, 50) || "Untitled Note";
 
-    // Check tenant exists & plan limit
     const tenant = await prisma.tenant.findUnique({ where: { id: payload.tenantId } });
     if (!tenant) return NextResponse.json({ error: "Tenant not found" }, { status: 404 });
 
     const totalNotes = await prisma.note.count({ where: { tenantId: tenant.id } });
 
-    // FREE plan limit = 3 notes (you can change to 3 if your assignment requires 3)
     if (tenant.plan === "FREE" && totalNotes >= 3) {
       return NextResponse.json(
         { error: "Free plan limit reached (3 notes max)" },

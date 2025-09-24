@@ -7,7 +7,7 @@ export function middleware(req: NextRequest) {
   const allowedOrigins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://your-vercel-app.vercel.app", // replace with actual deployed domain
+    "https://assignment-saas-note-2ngu.vercel.app", // replace with actual deployed domain
   ];
 
   const res = NextResponse.next();
