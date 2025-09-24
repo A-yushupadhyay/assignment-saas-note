@@ -4,10 +4,10 @@ import { verifyJwt } from "@/lib/auth";
 
 export async function POST(
   req: NextRequest,
-  context: { params: { slug: string } }
+  params: { params: { slug: string } }
 ) {
   try {
-    const { slug } = (await context.params) as { slug: string };
+    const { slug } = params.params;
 
     const token = req.headers.get("authorization")?.replace("Bearer ", "");
     if (!token) {
