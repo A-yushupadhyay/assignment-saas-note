@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { verifyJwt } from "@/lib/auth";
 
-export async function POST(req: NextRequest, context: { params: { slug: string } }) {
+export async function POST(req: NextRequest, context: { params: Promise<{ slug: string }> }) {
   try {
-    const { slug } = context.params;
+    const { slug } = await context.params;
 
     const token = req.headers.get("authorization")?.replace("Bearer ", "");
     if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
