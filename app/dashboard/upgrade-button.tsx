@@ -60,7 +60,7 @@ export default function UpgradeButton() {
     <div className="p-4 border border-indigo-200 bg-indigo-50 rounded-xl flex flex-col items-center shadow-md">
       {upgraded ? (
         <p className="text-green-600 font-semibold">
-          ✅ You’re now upgraded to Pro!
+           You’re now upgraded to Pro!
         </p>
       ) : (
         <>
@@ -79,7 +79,7 @@ export default function UpgradeButton() {
                 : "bg-indigo-600 hover:bg-indigo-700"
             }`}
           >
-            {loading ? "Upgrading..." : "🚀 Upgrade to Pro"}
+            {loading ? "Upgrading..." : " Upgrade to Pro"}
           </motion.button>
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </>

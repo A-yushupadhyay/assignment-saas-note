@@ -44,7 +44,7 @@ export default function DashboardPage() {
         return;
       }
 
-      // ✅ normalize so id, title, content are always strings
+      // normalize so id, title, content are always strings
       if (Array.isArray(data)) {
         const normalized: Note[] = data.map(
           (n: { id?: string; _id?: string; title?: string; content?: string }) => ({
@@ -167,7 +167,7 @@ export default function DashboardPage() {
         animate={{ opacity: 1, y: 0 }}
         className="text-3xl font-bold text-gray-800 mb-6"
       >
-        📒 Your Notes
+         Your Notes
       </motion.h1>
 
       {limitReached && (
