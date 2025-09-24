@@ -4,10 +4,10 @@ import { verifyJwt } from "@/lib/auth";
 
 export async function POST(
   req: NextRequest,
-  params: { params: { slug: string } }
+  context: { params: Promise<{ slug: string }> } // ✅ Match Next.js type
 ) {
   try {
-    const { slug } = params.params;
+    const { slug } = await context.params; // ✅ Await the promise
 
     const token = req.headers.get("authorization")?.replace("Bearer ", "");
     if (!token) {
@@ -24,10 +24,7 @@ export async function POST(
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const tenant = await prisma.tenant.findUnique({
-      where: { slug },
-    });
-
+    const tenant = await prisma.tenant.findUnique({ where: { slug } });
     if (!tenant) {
       return NextResponse.json({ error: "Tenant not found" }, { status: 404 });
     }
@@ -38,7 +35,7 @@ export async function POST(
 
     const updated = await prisma.tenant.update({
       where: { slug },
-      data: { plan: "PRO" }, // ✅ fixed field name
+      data: { plan: "PRO" },
     });
 
     return NextResponse.json({
